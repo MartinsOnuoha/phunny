@@ -1,22 +1,51 @@
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 require('./bootstrap');
 
+
 window.Vue = require('vue');
+window.Vuetify = require('vuetify');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import colors from 'vuetify/es5/util/colors';
+
+
+Vue.use(VueRouter);
+
+Vue.use(Vuetify, {
+	theme: {
+	    primary: '#3f51b5',
+	    secondary: '#b0bec5',
+	    accent: '#8c9eff',
+	    success: '#4CAF50',
+	    error: '#F44336',
+	    warning: '#FBC02D',
+	    info: '#0288D1'
+	},
+	iconfont: 'mdi'
+});
+
+let Toolbar = Vue.component('Toolbar', require('./components/Toolbar.vue'));
+let Home = Vue.component('Home', require('./components/Home'));
+let About = Vue.component('About', require('./components/About'));
+let Phones = Vue.component('Phones', require('./components/Phones'));
+
+
+const routes = [
+	{ path: '/home', component: Home },
+	{ path: '/about', component: About },
+	{ path: '/phones', component: Phones }
+]
+
+const router = new VueRouter({
+	routes,
+	mode: 'history'
+})
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    components: {Toolbar},
+    router
 });
+
