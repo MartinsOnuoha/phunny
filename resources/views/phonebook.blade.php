@@ -11,7 +11,9 @@
 </head>
 <body>
 	<div id="app">
+
 		<Toolbar></Toolbar>	
+		
 		<div class="container">	
 			<router-view></router-view>	
 		</div>

@@ -26,7 +26,7 @@ Vue.use(Vuetify, {
 	iconfont: 'mdi'
 });
 
-let Toolbar = Vue.component('Toolbar', require('./components/Toolbar.vue'));
+let Toolbar = Vue.component('Toolbar', require('./components/Toolbar'));
 let Home = Vue.component('Home', require('./components/Home'));
 let About = Vue.component('About', require('./components/About'));
 let Phones = Vue.component('Phones', require('./components/Phones'));
