@@ -17,13 +17,13 @@
 				  	<div class="control">
 				    	<input class="input" :class="{'is-danger':errors.phone}" type="text" placeholder="Phone" v-model="list.phone">
 				  	</div>
-				  	<small class="has-text-danger" v-if="errors.name">{{ errors.phone[0] }}</small>
+				  	<small class="has-text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small>
 				</div>
 				<div class="field">
 				  	<div class="control">
 				    	<input class="input" :class="{'is-danger':errors.email}" type="email" placeholder="Email" v-model="list.email">
 				  	</div>
-				  	<small class="has-text-danger" v-if="errors.name">{{ errors.email[0] }}</small>
+				  	<small class="has-text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
 				</div>
 
 	      	</section>
@@ -49,7 +49,8 @@
       				phone: '',
       				email: ''
       			},
-      			errors: {}
+      			errors: {},
+      			success: false
       		}
     	},
     	methods: {
@@ -57,7 +58,10 @@
     			this.$emit('closeRequest');
     		},
     		savePhone() {
-    			axios.post('/phonebook', this.$data.list).then((response) => this.closeModal() )
+    			axios.post('/phonebook', this.$data.list).then((response) => { 
+    				this.closeModal();
+    				this.success = true; 
+    			})
 					.catch((error) => this.errors = error.response.data.errors);
     		}
     	}

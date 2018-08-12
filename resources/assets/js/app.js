@@ -30,6 +30,7 @@ let Toolbar = Vue.component('Toolbar', require('./components/Toolbar'));
 let Home = Vue.component('Home', require('./components/Home'));
 let About = Vue.component('About', require('./components/About'));
 let Phones = Vue.component('Phones', require('./components/Phones'));
+// let Snack = Vue.component('SnackS', require('./components/Snack'));
 
 
 const routes = [

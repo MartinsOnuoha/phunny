@@ -20,6 +20,10 @@ Route::get('/phones', function () {
 	return view('phonebook');
 });
 
+Route::get('/home', function () {
+	return view('phonebook');
+});
+
 Route::get('/phonebook/list', 'PhonebookController@list');
 Route::resource('phonebook', 'PhonebookController');
 

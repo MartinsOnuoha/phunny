@@ -94,9 +94,9 @@ class PhonebookController extends Controller
      * @param  \App\Phonebook  $phonebook
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Phonebook $phonebook)
-    {
-        //
+    public function destroy(Request $request, $id)
+    {   
+        
     }
 
     public function list()

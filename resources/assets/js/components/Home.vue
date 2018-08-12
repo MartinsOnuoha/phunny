@@ -21,6 +21,7 @@
             </v-layout>
           </v-container>
         </v-jumbotron>
+
       </v-flex>
     </v-layout>
   </v-container>
