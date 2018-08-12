@@ -25,7 +25,7 @@
 					<v-icon color="red lighten-2">delete</v-icon>
 				</span>
 				<span class="column is-1">
-					<v-icon color="green lighten-2">edit</v-icon>
+					<v-icon color="green lighten-2" @click="openUpdate(key)">edit</v-icon>
 				</span>
 				<span class="column is-1">
 					<v-icon @click="openDetails(key)">face</v-icon>
@@ -41,6 +41,7 @@
 
 		<Add :openmodal='addActive' @closeRequest="closeModal"></Add>
 		<Show :openmodal='showActive' @closeRequest="closeModal"></Show>
+		<Update :openmodal='updateActive' @closeRequest="closeModal"></Update>
 	</div>
 
 </template>
@@ -49,15 +50,18 @@
 
 let Add = require('./Add');
 let Show = require('./Show');
+let Update = require('./Update');
+
     export default {
  
-      	components: {Add, Show},
+      	components: {Add, Show, Update},
 
       	data() {
       		return {
 
       			addActive: '',
       			showActive: '',
+      			updateActive: '',
       			list: {},
       			errors: {}
       		}
@@ -74,13 +78,15 @@ let Show = require('./Show');
       			this.addActive = 'is-active';
       		},      		
       		openDetails(key) {
-      			this.showActive = 'is-active';
       			this.$children[2].list = this.list[key]
+      			this.showActive = 'is-active';
       		},
-
+      		openUpdate(key) {
+      			this.$children[3].list = this.list[key]
+      			this.updateActive = 'is-active';
+      		},
       		closeModal() {
-      			this.addActive = '';
-      			this.showActive = '';
+      			this.addActive = this.showActive = this.updateActive = '';
       		},
 			getPhones() {
 				axios.get('/phonebook/list').then((response) => console.log(response))
