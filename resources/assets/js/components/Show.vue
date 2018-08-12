@@ -1,0 +1,48 @@
+<template>
+	<div class="modal" :class="openmodal">
+	    <div class="modal-background"></div>
+	    <div class="modal-card">
+	      	<header class="modal-card-head">
+	        	<p class="modal-card-title">Contact Details</p>
+	        	<button class="delete" aria-label="close" @click="closeModal"></button>
+	      	</header>
+	      	<section class="modal-card-body">
+
+	      		<li class="panel-block">
+	      			<lable class="column is-2"><b>Name</b></lable> {{ list.name }}
+	      		</li>
+
+	      		<li class="panel-block">
+	      			<lable class="column is-2"><b>Phone</b></lable> {{ list.phone }}
+	      		</li>
+
+	      		<li class="panel-block">
+	      			<lable class="column is-2"><b>Email</b></lable> {{ list.email }}
+	      		</li>
+
+	      	</section>
+	      	<footer class="modal-card-foot">
+	        	<button class="button" @click="closeModal">Close</button>
+	      	</footer>
+	    </div>
+	</div>
+</template>
+
+<script>
+	
+	export default {
+		props: ['openmodal'],
+
+		data() {
+			return {
+				list: ''
+			}
+		},
+		methods: {
+			closeModal() {
+    			this.$emit('closeRequest');
+    		},
+		}
+
+	};
+</script>
