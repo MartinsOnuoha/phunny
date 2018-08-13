@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class PhonebookController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display Phonebook Page.
      *
      * @return \Illuminate\Http\Response
      */
@@ -19,18 +19,21 @@ class PhonebookController extends Controller
         return view('phonebook');
     }
 
+
     /**
-     * Show the form for creating a new resource.
+     * List all Phonebook Entries.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+
+    public function list()
     {
-        //
+        return Phonebook::orderBy('created_at', 'DESC')->get();
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly contact.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -48,14 +51,14 @@ class PhonebookController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Delete All Phonebook Entries
      *
      * @param  \App\Phonebook  $phonebook
      * @return \Illuminate\Http\Response
      */
-    public function show(Phonebook $phonebook)
+    public function deleteAll()
     {
-        //
+        Phonebook::truncate();
     }
 
     /**
@@ -70,7 +73,7 @@ class PhonebookController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Contact Details.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Phonebook  $phonebook
@@ -89,18 +92,14 @@ class PhonebookController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove One Contact.
      *
      * @param  \App\Phonebook  $phonebook
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Phonebook $phonebook)
     {   
-        
+        Phonebook::where('id', $phonebook->id)->delete();
     }
 
-    public function list()
-    {
-        return Phonebook::orderBy('created_at', 'DESC')->get();
-    }
 }

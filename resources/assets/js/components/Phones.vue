@@ -22,7 +22,7 @@
 			  		{{ item.name }}
 				</span>
 				<span class="column is-1">
-					<v-icon color="red lighten-2">delete</v-icon>
+					<v-icon color="red lighten-2" @click="del(key,item.id)">delete</v-icon>
 				</span>
 				<span class="column is-1">
 					<v-icon color="green lighten-2" @click="openUpdate(key)">edit</v-icon>
@@ -88,6 +88,7 @@ let SnackError = require('./SnackError');
       			addActive: '',
       			showActive: '',
       			updateActive: '',
+      			deleteActive: '',
       			list: {},
       			errors: {},
       			success: false,
@@ -109,6 +110,20 @@ let SnackError = require('./SnackError');
       		openDetails(key) {
       			this.$children[2].list = this.list[key]
       			this.showActive = 'is-active';
+      			this.$data.msg = 'View Details'
+      		},
+      		getFreshData() {
+				axios.get('/phonebook/list')
+					.then((response) => this.list = response.data)
+					.catch((error) => this.errors = error.response.data.errors)
+		  			.then(() => { this.$data.msg = 'Loaded Contacts' });
+	    	},
+      		del(key, id) {
+				axios.delete(`phonebook/${id}`)
+					.then((response) => console.log('deleted'))
+					.catch((error) => this.errors = error.response.data.errors)
+		  			.then(() => { this.$data.msg = 'Deleted Contact' });
+		  		this.getFreshData();
       		},
       		openUpdate(key) {
       			this.$children[3].list = this.list[key]
