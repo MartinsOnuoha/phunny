@@ -1,6 +1,6 @@
-# Aqua
+# Phunny - Laravel + Vuetify + Axios BoilerPlate
 
-A website and user system starter.
+A website and conctact system starter.
 
 [![Build Status](https://travis-ci.org/jedireza/aqua.svg?branch=master)](https://travis-ci.org/jedireza/aqua)
 
