@@ -169,7 +169,7 @@ let Update = require('./Update');
       		},
       		// Open Update Modal
       		openUpdate(key) {
-      			this.$children[3].list = this.temp[key]
+      			this.$children[4].list = this.temp[key]
       			this.updateActive = 'is-active';
       			this.$data.msg = 'Contact updated'
       		},

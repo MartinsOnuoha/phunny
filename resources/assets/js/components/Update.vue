@@ -59,7 +59,7 @@
     		},
     		updatePhone () {
     			axios.patch(`/phonebook/${this.list.id}`, this.$data.list).then((response) => {
-    					this.$emit('showNotification');
+    					this.$parent.
     					this.closeModal();
     				})
 					.catch((error) => this.errors = error.response.data.errors);
