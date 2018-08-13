@@ -116,14 +116,13 @@ let Update = require('./Update');
       		this.getFreshData();
     	},
     	watch: {
-    		// Run function on search input change
+    		// Run function on search input change.
 			searchQuery() {
 				if (this.searchQuery.length > 0) {
 					this.temp = this.list.filter((contact) => {
 						return Object.keys(contact).some((key) => {
 							// convert to String
 							let str = String(contact[key])
-
 							return str.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1
 						})
 					})

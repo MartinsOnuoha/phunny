@@ -67925,7 +67925,7 @@ var Update = __webpack_require__(76);
   },
 
   watch: {
-    // Run function on search input change
+    // Run function on search input change.
     searchQuery: function searchQuery() {
       var _this = this;
 
@@ -67934,7 +67934,6 @@ var Update = __webpack_require__(76);
           return Object.keys(contact).some(function (key) {
             // convert to String
             var str = String(contact[key]);
-
             return str.toLowerCase().indexOf(_this.searchQuery.toLowerCase()) > -1;
           });
         });
