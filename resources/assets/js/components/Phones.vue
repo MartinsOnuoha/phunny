@@ -120,9 +120,12 @@ let Update = require('./Update');
 			searchQuery() {
 				if (this.searchQuery.length > 0) {
 					this.temp = this.list.filter((contact) => {
-						
-						return contact.name.toLowerCase()
-							.indexOf(this.searchQuery.toLowerCase()) > -1
+						return Object.keys(contact).some((key) => {
+							// convert to String
+							let str = String(contact[key])
+
+							return str.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1
+						})
 					})
 				} else {
 					this.temp = this.list
@@ -137,7 +140,7 @@ let Update = require('./Update');
       		},    
       		// Show Contact Details  		
       		openDetails(key) {
-      			this.$children[3].list = this.list[key]
+      			this.$children[3].list = this.temp[key]
       			this.showActive = 'is-active';
       		},
       		// Refresh Contact List
@@ -167,7 +170,7 @@ let Update = require('./Update');
       		},
       		// Open Update Modal
       		openUpdate(key) {
-      			this.$children[3].list = this.list[key]
+      			this.$children[3].list = this.temp[key]
       			this.updateActive = 'is-active';
       			this.$data.msg = 'Contact updated'
       		},

@@ -67931,8 +67931,12 @@ var Update = __webpack_require__(76);
 
       if (this.searchQuery.length > 0) {
         this.temp = this.list.filter(function (contact) {
+          return Object.keys(contact).some(function (key) {
+            // convert to String
+            var str = String(contact[key]);
 
-          return contact.name.toLowerCase().indexOf(_this.searchQuery.toLowerCase()) > -1;
+            return str.toLowerCase().indexOf(_this.searchQuery.toLowerCase()) > -1;
+          });
         });
       } else {
         this.temp = this.list;
@@ -67947,7 +67951,7 @@ var Update = __webpack_require__(76);
 
     // Show Contact Details  		
     openDetails: function openDetails(key) {
-      this.$children[3].list = this.list[key];
+      this.$children[3].list = this.temp[key];
       this.showActive = 'is-active';
     },
 
@@ -67983,7 +67987,7 @@ var Update = __webpack_require__(76);
 
     // Open Update Modal
     openUpdate: function openUpdate(key) {
-      this.$children[3].list = this.list[key];
+      this.$children[3].list = this.temp[key];
       this.updateActive = 'is-active';
       this.$data.msg = 'Contact updated';
     },
