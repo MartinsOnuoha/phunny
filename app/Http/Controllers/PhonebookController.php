@@ -88,6 +88,8 @@ class PhonebookController extends Controller
         $phoneBook->email = $request->email;
 
         $phoneBook->save();
+
+        return $phoneBook;
         
     }
 

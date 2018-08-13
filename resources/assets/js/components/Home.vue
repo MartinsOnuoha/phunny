@@ -5,7 +5,7 @@
         <v-toolbar color="cyan" dark>
           <v-toolbar-side-icon></v-toolbar-side-icon>
 
-          <v-toolbar-title>Contacts</v-toolbar-title>
+          <v-toolbar-title>All Contacts</v-toolbar-title>
 
           <v-spacer></v-spacer>
 

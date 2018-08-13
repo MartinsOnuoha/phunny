@@ -67252,7 +67252,7 @@ var render = function() {
                 [
                   _c("v-toolbar-side-icon"),
                   _vm._v(" "),
-                  _c("v-toolbar-title", [_vm._v("Contacts")]),
+                  _c("v-toolbar-title", [_vm._v("All Contacts")]),
                   _vm._v(" "),
                   _c("v-spacer"),
                   _vm._v(" "),
@@ -67535,7 +67535,7 @@ exports = module.exports = __webpack_require__(11)(false);
 
 
 // module
-exports.push([module.i, "\n.notification {\n    position: -webkit-sticky;\n    position: sticky;\n    bottom: 0;\n    padding: 50px;\n    font-size: 20px;\n    margin: 0 auto;\n    width: 30%;\n    z-index: 21;\n    float: right;\n}\n.text-center {\n}\n", ""]);
+exports.push([module.i, "\n.spinner {\n\theight: 20px;\n\twidth: 20px;\n\tfloat: right !important;\n}\n.notification {\n   position: -webkit-sticky;\n   position: sticky;\n   bottom: 0;\n   /*padding: 50px;*/\n   font-size: 15px;\n   margin: 0 auto;\n   width: 25%;\n   z-index: 21;\n   float: right;\n}\n.v-loader {\n\tmargin: 0.2rem;\n\theight: 5px;\n\twidth: 5px;\n}\n", ""]);
 
 // exports
 
@@ -67880,17 +67880,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 var Add = __webpack_require__(70);
 var Show = __webpack_require__(73);
 var Update = __webpack_require__(76);
-var SnackSuccess = __webpack_require__(79);
-var SnackError = __webpack_require__(83);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-  components: { Add: Add, Show: Show, Update: Update, SnackSuccess: SnackSuccess, SnackError: SnackError },
+  components: { Add: Add, Show: Show, Update: Update },
 
   data: function data() {
     return {
@@ -67900,43 +67914,62 @@ var SnackError = __webpack_require__(83);
       deleteActive: '',
       list: {},
       errors: {},
-      success: false,
-      failure: false,
+      load: false,
+      searchQuery: '',
+      temp: '',
       msg: ''
     };
   },
   mounted: function mounted() {
-    var _this = this;
+    this.getFreshData();
+  },
 
-    axios.get('/phonebook/list').then(function (response) {
-      return _this.list = response.data;
-    }).catch(function (error) {
-      return _this.errors = error.response.data.errors;
-    }).then(function () {
-      _this.$data.msg = 'Loaded Contacts';
-    });
+  watch: {
+    // Run function on search input change
+    searchQuery: function searchQuery() {
+      var _this = this;
+
+      if (this.searchQuery.length > 0) {
+        this.temp = this.list.filter(function (contact) {
+
+          return contact.name.toLowerCase().indexOf(_this.searchQuery.toLowerCase()) > -1;
+        });
+      } else {
+        this.temp = this.list;
+      }
+    }
   },
 
   methods: {
     openAdd: function openAdd() {
       this.addActive = 'is-active';
     },
+
+    // Show Contact Details  		
     openDetails: function openDetails(key) {
-      this.$children[2].list = this.list[key];
+      this.$children[3].list = this.list[key];
       this.showActive = 'is-active';
-      this.$data.msg = 'View Details';
     },
+
+    // Refresh Contact List
     getFreshData: function getFreshData() {
       var _this2 = this;
 
+      this.toggleLoader();
+      this.$data.msg = 'Please Wait';
+
       axios.get('/phonebook/list').then(function (response) {
-        return _this2.list = response.data;
+        setTimeout(function () {
+          _this2.list = _this2.temp = response.data;
+          _this2.toggleLoader();
+          _this2.updateNotify();
+        }, 1000);
       }).catch(function (error) {
         return _this2.errors = error.response.data.errors;
-      }).then(function () {
-        _this2.$data.msg = 'Loaded Contacts';
-      });
+      }).then(function () {});
     },
+
+    // Delete Contact by ID || Remove from list by key
     del: function del(key, id) {
       var _this3 = this;
 
@@ -67944,21 +67977,45 @@ var SnackError = __webpack_require__(83);
         return console.log('deleted');
       }).catch(function (error) {
         return _this3.errors = error.response.data.errors;
-      }).then(function () {
-        _this3.$data.msg = 'Deleted Contact';
-      });
+      }).then(function () {});
       this.getFreshData();
     },
+
+    // Open Update Modal
     openUpdate: function openUpdate(key) {
       this.$children[3].list = this.list[key];
       this.updateActive = 'is-active';
       this.$data.msg = 'Contact updated';
     },
+
+    // Close all Modals
     closeModal: function closeModal() {
       this.addActive = this.showActive = this.updateActive = '';
     },
+
+    // Message after every reload
     updateNotify: function updateNotify() {
-      this.$data.msg = 'Contact updated';
+      return this.$data.msg = 'Contacts updated';
+    },
+
+    // Toggle loader dynamically
+    toggleLoader: function toggleLoader() {
+      if (this.$data.load) {
+        this.$data.load = false;
+      } else {
+        this.$data.load = true;
+      }
+    },
+
+    // Sort Contacts by Name
+    sortContacts: function sortContacts() {
+      this.list.sort(function (a, b) {
+        if (a.name > b.name) {
+          return 1;
+        } else if (a.name < b.name) {
+          return -1;
+        }
+      });
     }
   }
 });
@@ -67982,7 +68039,7 @@ var render = function() {
             "p",
             { staticClass: "panel-heading" },
             [
-              _vm._v("\n\t\t  \tPhone Book\n\t\t\t "),
+              _vm._v("\n\t\t  \tManage PhoneBook \n\t\t\t"),
               _c(
                 "v-btn",
                 {
@@ -67992,14 +68049,56 @@ var render = function() {
                   slot: "activator"
                 },
                 [_vm._v("\n\t\t\t \tAdd New\n\t\t\t")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-5",
+                  attrs: { slot: "activator", color: "green lighten-2" },
+                  on: { click: _vm.sortContacts },
+                  slot: "activator"
+                },
+                [_vm._v("\n\t\t\t \tSort Contacts\n\t\t\t")]
               )
             ],
             1
           ),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "panel-block" }, [
+            _c("p", { staticClass: "control has-icons-left" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.searchQuery,
+                    expression: "searchQuery"
+                  }
+                ],
+                staticClass: "input is-small",
+                attrs: { type: "text", placeholder: "search" },
+                domProps: { value: _vm.searchQuery },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.searchQuery = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "span",
+                { staticClass: "icon is-small is-left" },
+                [_c("v-icon", [_vm._v("search")])],
+                1
+              )
+            ])
+          ]),
           _vm._v(" "),
-          _vm._l(_vm.list, function(item, key) {
+          _vm._l(_vm.temp, function(item, key) {
             return _c("a", { staticClass: "panel-block is-active" }, [
               _c("span", { staticClass: "column is-9" }, [
                 _vm._v("\n\t\t  \t\t" + _vm._s(item.name) + "\n\t\t\t")
@@ -68080,11 +68179,21 @@ var render = function() {
         2
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "notification is-primary text-center" }, [
-        _c("button", { staticClass: "delete" }),
-        _vm._v(" "),
-        _c("strong", [_vm._v(_vm._s(_vm.msg))])
-      ]),
+      _c(
+        "div",
+        { staticClass: "notification is-primary" },
+        [
+          _vm.load == true
+            ? _c("v-progress-circular", {
+                staticClass: "v-loader",
+                attrs: { indeterminate: "", color: "primary" }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _c("strong", [_vm._v(_vm._s(_vm.msg))])
+        ],
+        1
+      ),
       _vm._v(" "),
       _c("Add", {
         attrs: { openmodal: _vm.addActive },
@@ -68099,35 +68208,12 @@ var render = function() {
       _c("Update", {
         attrs: { openmodal: _vm.updateActive },
         on: { closeRequest: _vm.closeModal }
-      }),
-      _vm._v(" "),
-      _vm.failure ? _c("SnackError") : _vm._e()
+      })
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "panel-block" }, [
-      _c("p", { staticClass: "control has-icons-left" }, [
-        _c("input", {
-          staticClass: "input is-small",
-          attrs: { type: "text", placeholder: "search" }
-        }),
-        _vm._v(" "),
-        _c("span", { staticClass: "icon is-small is-left" }, [
-          _c("i", {
-            staticClass: "fas fa-search",
-            attrs: { "aria-hidden": "true" }
-          })
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -68238,6 +68324,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -68266,8 +68355,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.closeModal();
       }).catch(function (error) {
         return _this.errors = error.response.data.errors;
+      }).then(function () {
+        return _this.$parent.getFreshData();
       });
-      location.reload(true);
+      //this.list = {};
     }
   }
 });
@@ -68296,6 +68387,8 @@ var render = function() {
       _vm._v(" "),
       _c("section", { staticClass: "modal-card-body" }, [
         _c("div", { staticClass: "field" }, [
+          _c("label", { staticClass: "label" }, [_vm._v("Name")]),
+          _vm._v(" "),
           _c("div", { staticClass: "control" }, [
             _c("input", {
               directives: [
@@ -68329,6 +68422,8 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "field" }, [
+          _c("label", { staticClass: "label" }, [_vm._v("Phone")]),
+          _vm._v(" "),
           _c("div", { staticClass: "control" }, [
             _c("input", {
               directives: [
@@ -68362,6 +68457,8 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "field" }, [
+          _c("label", { staticClass: "label" }, [_vm._v("Email")]),
+          _vm._v(" "),
           _c("div", { staticClass: "control" }, [
             _c("input", {
               directives: [
@@ -68881,269 +68978,13 @@ if (false) {
 }
 
 /***/ }),
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(80)
-}
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = null
-/* template */
-var __vue_template__ = __webpack_require__(82)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/SnackSuccess.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-17869b0c", Component.options)
-  } else {
-    hotAPI.reload("data-v-17869b0c", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(81);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(61)("64a1b717", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-17869b0c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SnackSuccess.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-17869b0c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SnackSuccess.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(11)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.notification {\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 0;\n  background-color: yellow;\n  padding: 50px;\n  font-size: 20px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "notification is-primary" }, [
-      _c("button", { staticClass: "delete" }),
-      _vm._v(
-        "\n  Primar lorem ipsum dolor sit amet, consectetur\n  adipiscing elit lorem ipsum dolor. "
-      ),
-      _c("strong", [_vm._v("Pellentesque risus mi")]),
-      _vm._v(
-        ", tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum "
-      ),
-      _c("a", [_vm._v("felis venenatis")]),
-      _vm._v(" efficitur. Sit amet,\n  consectetur adipiscing elit\n")
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-17869b0c", module.exports)
-  }
-}
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(84)
-/* template */
-var __vue_template__ = __webpack_require__(85)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/SnackError.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1ab52a5e", Component.options)
-  } else {
-    hotAPI.reload("data-v-1ab52a5e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 84 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      snackbar: true,
-      color: 'red lighten-2',
-      mode: 'multi-line',
-      timeout: 6000,
-      text: 'An Error occurred.'
-    };
-  }
-});
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-snackbar",
-    {
-      attrs: { color: _vm.color, "multi-line": _vm.mode, timeout: _vm.timeout },
-      model: {
-        value: _vm.snackbar,
-        callback: function($$v) {
-          _vm.snackbar = $$v
-        },
-        expression: "snackbar"
-      }
-    },
-    [
-      _vm._v("\n  \t" + _vm._s(_vm.text) + "\n  \t"),
-      _c(
-        "v-btn",
-        {
-          attrs: { dark: "", flat: "" },
-          on: {
-            click: function($event) {
-              _vm.snackbar = false
-            }
-          }
-        },
-        [_vm._v("\n    \t\tClose\n  \t")]
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1ab52a5e", module.exports)
-  }
-}
-
-/***/ }),
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
 /* 86 */,
 /* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
