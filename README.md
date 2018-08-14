@@ -1,71 +1,62 @@
 # Phunny - Laravel + Vuetify + Axios BoilerPlate
 
-A website and conctact system starter.
+A CRUD application built with Laravel, Vue, Vuetify and Bulma CSS to manage a Phone book System.
 
-[![Build Status](https://travis-ci.org/jedireza/aqua.svg?branch=master)](https://travis-ci.org/jedireza/aqua)
 
 
 ## Features
 
- - Universal front-end website
-   - Basic web pages ready to customize
-   - Contact page with form to email
-   - Account sign-up page
-   - Login pages including forgot and reset password
- - My account area
-   - Stub dashboard ready to customize
-   - Settings screen to update contact info and login credentials
+ - FrontEnd
+   - Basic Components Ready to be edited
+   - Default Customizable Laravel Landing Page
+   - List of Available Contacts (Vuetify)
+   - About Page
  - Admin back office
-   - Stub dashboard ready to customize
-   - Manage accounts, admins, groups and users
-   - Use groups (like departments) for shared permissions
-   - Granular permissions override group permissions
+   - Single Admin Page
+   - Manage Contact Creation
+   - Update Contact Details
+   - Delete Contact
 
 
-## Live demo
 
-| url                            | username | password |
-|:------------------------------ |:-------- |:-------- |
-| https://getaqua.herokuapp.com/ | root     | root     |
+## Routes
+
+| Method | URI             | Name       | Action              |
+|:------------------------ |:---------- |:------------------- |
+| GET    | /               | Welcome    | `view('welcome')`   |
+| GET    | /phones         | Phonebook  | `view('phonebook')` |
+| GET    | /home           | Home       | `view('phonebook')` |
+| GET    | /about          | About      | `view('phonebook')` |
+| GET    | /phonebook/list | Phonebooks | PhonebookController@list |
+| POST   | /phonebook      | Add        | PhonebookController@store |
+| DELETE | /phonebook      | Delete All | PhonebookController@deleteAll |
+| PATCH  | /phonebook/:id  | Update     | PhonebookController@update  |
+| DELETE | /phonebook/:id  | Delete One | PhonebookController@destroy |
 
 
 ## Technology
 
-Server side, Aqua is built with the [hapi](https://hapijs.com/) framework.
-We're using [MongoDB](http://www.mongodb.org/) as a data store.
+Server side, Phunny is built with Laravel.
+It uses MySQL/PostgreSQL as a data store.
 
-The front-end is built with [React](https://github.com/facebook/react). We use
-[Redux](https://github.com/reactjs/redux) as our state container. Client side
-routing is done with [React Router](https://github.com/reactjs/react-router).
-We're using [Gulp](http://gulpjs.com/) for the build system.
-
-We use [`bcrypt`](https://github.com/ncb000gt/node.bcrypt.js) for hashing
-secrets. If you have issues during installation related to `bcrypt` then [refer
-to this wiki
-page](https://github.com/jedireza/aqua/wiki/bcrypt-Installation-Trouble).
-
-
-## API only
-
-If you don't use React and/or would rather bring your own front-end, checkout
-[Frame](https://github.com/jedireza/frame). It's just the HTTP API parts of Aqua.
+The front-end is built with VueJS. With Vuetify for building components and Vue-Router for routing.
 
 
 ## Installation
 
 ```bash
-$ git clone git@github.com:jedireza/aqua.git
-$ cd aqua
+$ git clone https://github.com/MartinsOnuoha/phunny.git
+$ cd phunny
 $ npm install
+$ composer install
 ```
+
 
 
 ## Configuration
 
-Simply edit `config.js`. The configuration uses
-[`confidence`](https://github.com/hapijs/confidence) which makes it easy to
-manage configuration settings across environments. __Don't store secrets in
-this file or commit them to your repository.__
+Simply edit `.env` with your database connection credentials.
+00
 
 __Instead, access secrets via environment variables.__ We use
 [`dotenv`](https://github.com/motdotla/dotenv) to help make setting local
