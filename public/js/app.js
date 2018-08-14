@@ -68688,7 +68688,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       axios.patch('/phonebook/' + this.list.id, this.$data.list).then(function (response) {
-        _this.$parent.this.closeModal();
+        // this.$parent.
+        _this.closeModal();
       }).catch(function (error) {
         return _this.errors = error.response.data.errors;
       });

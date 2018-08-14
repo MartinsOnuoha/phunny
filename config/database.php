@@ -41,20 +41,20 @@ return [
             'prefix' => '',
         ],
 
-        'mysql' => [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
-            'strict' => true,
-            'engine' => null,
-        ],
+        // 'mysql' => [
+        //     'driver' => 'mysql',
+        //     'host' => env('DB_HOST', '127.0.0.1'),
+        //     'port' => env('DB_PORT', '3306'),
+        //     'database' => env('DB_DATABASE', 'forge'),
+        //     'username' => env('DB_USERNAME', 'forge'),
+        //     'password' => env('DB_PASSWORD', ''),
+        //     'unix_socket' => env('DB_SOCKET', ''),
+        //     'charset' => 'utf8mb4',
+        //     'collation' => 'utf8mb4_unicode_ci',
+        //     'prefix' => '',
+        //     'strict' => true,
+        //     'engine' => null,
+        // ],
 
         // 'pgsql' => [
         //     'driver' => 'pgsql',
@@ -70,16 +70,16 @@ return [
         // ],
 
         'pgsql' => [
-            'driver' => 'pgsql',
-            'host' => env('DB_HOST', 'ec2-54-235-160-57.compute-1.amazonaws.com'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'd2vrsea7v06fj1'),
-            'username' => env('DB_USERNAME', 'mucrgahbvkvunn'),
-            'password' => env('DB_PASSWORD', '6aa090ce263f4296f9d67f609dbbf9a530cc56dbb3194ad48cab67d92d56d83d'),
+            'driver' => "pgsql",
+            'host' => "ec2-54-235-160-57.compute-1.amazonaws.com",
+            'port' => 5432,
+            'database' => "d2vrsea7v06fj1",
+            'username' => "mucrgahbvkvunn",
+            'password' => "6aa090ce263f4296f9d67f609dbbf9a530cc56dbb3194ad48cab67d92d56d83d",
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
-            'sslmode' => 'prefer',
+           'sslmode' => 'prefer',
         ],
 
         'sqlsrv' => [
