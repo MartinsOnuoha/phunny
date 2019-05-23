@@ -18,22 +18,6 @@ A CRUD application built with Laravel, Vue, Vuetify and Bulma CSS to manage a Ph
    - Delete Contact
 
 
-
-## Routes
-
-| Method | URI             | Name       | Action              |
-|:------------------------ |:---------- |:------------------- |
-| GET    | /               | Welcome    | `view('welcome')`   |
-| GET    | /phones         | Phonebook  | `view('phonebook')` |
-| GET    | /home           | Home       | `view('phonebook')` |
-| GET    | /about          | About      | `view('phonebook')` |
-| GET    | /phonebook/list | Phonebooks | PhonebookController@list |
-| POST   | /phonebook      | Add        | PhonebookController@store |
-| DELETE | /phonebook      | Delete All | PhonebookController@deleteAll |
-| PATCH  | /phonebook/:id  | Update     | PhonebookController@update  |
-| DELETE | /phonebook/:id  | Delete One | PhonebookController@destroy |
-
-
 ## Technology
 
 Server side, Phunny is built with Laravel.
